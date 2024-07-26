@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const openweathermapApiKey = process.env.REACT_APP_API_KEY;
@@ -67,6 +67,7 @@ function generateDate() {
 
 function App() {
     const [weatherData, setWeatherData] = useState(null);
+    const [currentDate, setCurrentDate] = useState(generateDate());
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -80,11 +81,15 @@ function App() {
         };
 
         fetchData();
-        const intervalId = setInterval(fetchData, 60000); // Fetch data every 60 seconds
+        setCurrentDate(generateDate());
+
+        const intervalId = setInterval(() => {
+            fetchData();
+            setCurrentDate(generateDate());
+        }, 60000); // Fetch data and update date every 60 seconds
+
         return () => clearInterval(intervalId); // Clear interval on component unmount
     }, []); // Empty dependency array ensures this runs only once
-
-    const memoizedDate = useMemo(generateDate, []);
 
     if (error) {
         return <div className="App">{error}</div>;
@@ -111,7 +116,7 @@ function App() {
     return (
         <div className="App">
             <div className="city-name">{roundedWeatherData.name}</div>
-            <div className="date">{memoizedDate}</div>
+            <div className="date">{currentDate}</div>
             <div className="weather-block">
                 <div className="weather">
                     {roundedWeatherData.weather[0].description}
