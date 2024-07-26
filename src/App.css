@@ -11,15 +11,16 @@
 }
 
 .city-name {
-    font-size: 4rem;
+    font-size: 10rem;
     font-weight: 600;
 }
 
 .date {
-    border-radius: 20px;
-    padding: 10px;
+    border-radius: 3rem;
+    padding: 3rem;
     background-color: #000;
     color: #ffe142;
+    font-size: 5rem;
 }
 
 .weather-block {
@@ -30,13 +31,13 @@
 }
 
 .weather {
-    font-size: 3rem;
+    font-size: 7rem;
     font-weight: 300;
     text-transform: capitalize;
 }
 
 .temperature {
-    font-size: 20rem;
+    font-size: 40rem;
     font-weight: 700;
 }
 
@@ -53,16 +54,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 100px;
     gap: 20px;
 
     .icon {
         font-size: 5rem;
     }
     .info {
-        font-size: 3rem;
+        font-size: 12rem;
     }
     .type {
-        font-size: 1.5rem;
+        font-size: 4rem;
+    }
+
+    .wi {
+        font-size: 16rem;
     }
 }
