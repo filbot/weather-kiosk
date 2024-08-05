@@ -115,7 +115,7 @@ function App() {
 
     return (
         <div className="App">
-            <div className="city-name">{roundedWeatherData.name}</div>
+            {/* <div className="city-name">{roundedWeatherData.name}</div> */}
             <div className="date">{currentDate}</div>
             <div className="weather-block">
                 <div className="weather">

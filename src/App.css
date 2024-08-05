@@ -7,21 +7,21 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 40px;
+    padding: 2rem;
     cursor: none;
 }
 
 .city-name {
-    font-size: 10rem;
+    font-size: 5rem;
     font-weight: 600;
 }
 
 .date {
-    border-radius: 3rem;
-    padding: 3rem;
+    border-radius: 2rem;
+    padding: 2rem;
     background-color: #000;
     color: #ffe142;
-    font-size: 5rem;
+    font-size: 2rem;
 }
 
 .weather-block {
@@ -32,13 +32,13 @@
 }
 
 .weather {
-    font-size: 7rem;
+    font-size: 5rem;
     font-weight: 300;
     text-transform: capitalize;
 }
 
 .temperature {
-    font-size: 40rem;
+    font-size: 8rem;
     font-weight: 700;
 }
 
@@ -47,7 +47,9 @@
     justify-content: space-between;
     background-color: #000;
     color: #ffe142;
-    border-radius: 20px;
+    border-radius: 2rem;
+    padding: 2rem;
+    gap: 4rem;
 }
 
 .data-block {
@@ -55,20 +57,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 100px;
-    gap: 20px;
+    /* padding: 100px; */
+    gap: 5px;
 
     .icon {
-        font-size: 5rem;
+        font-size: .5rem;
     }
     .info {
-        font-size: 12rem;
+        font-size: 3rem;
     }
     .type {
-        font-size: 4rem;
+        font-size: 1rem;
     }
 
     .wi {
-        font-size: 16rem;
+        font-size: 3rem;
     }
 }
