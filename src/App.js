@@ -1,24 +1,6 @@
-import "./App.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useMemo } from "react";
+import './App.css';
 
-const openweathermapApiKey = process.env.REACT_APP_API_KEY;
-const coordinates = {
-    lon: -122.3694,
-    lat: 47.6506,
-};
-
-async function fetchWeatherData() {
-    try {
-        const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${openweathermapApiKey}&units=imperial`
-        );
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching weather data:", error);
-        return null;
-    }
-}
 
 function generateDate() {
     const date = new Date();
@@ -69,49 +51,68 @@ function App() {
     const [weatherData, setWeatherData] = useState(null);
     const [currentDate, setCurrentDate] = useState(generateDate());
     const [error, setError] = useState(null);
+    const [worker, setWorker] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await fetchWeatherData();
-            if (data) {
-                setWeatherData(data);
-            } else {
-                setError("Unable to fetch weather data.");
+        const newWorker = new Worker('/weatherWorker.js');
+        setWorker(newWorker);
+
+        newWorker.onmessage = function(e) {
+            if (e.data.type === 'error') {
+                setError(e.data.error);
+                setWeatherData(null);
+            } else if (e.data.type === 'success') {
+                setWeatherData(e.data.data);
+                setError(null);
             }
         };
 
-        fetchData();
-        setCurrentDate(generateDate());
+        newWorker.postMessage('start');
 
-        const intervalId = setInterval(() => {
-            fetchData();
+        return () => {
+            newWorker.postMessage('stop');
+            newWorker.terminate();
+        };
+    }, []);
+
+    useEffect(() => {
+        const dateInterval = setInterval(() => {
             setCurrentDate(generateDate());
-        }, 60000); // Fetch data and update date every 60 seconds
+        }, 60000);
 
-        return () => clearInterval(intervalId); // Clear interval on component unmount
-    }, []); // Empty dependency array ensures this runs only once
+        return () => clearInterval(dateInterval);
+    }, []);
+
+    const roundedWeatherData = useMemo(() => {
+        if (!weatherData) return null;
+        return {
+            ...weatherData,
+            main: {
+                ...weatherData.main,
+                temp: Math.round(weatherData.main.temp),
+                humidity: Math.round(weatherData.main.humidity),
+            },
+            wind: {
+                ...weatherData.wind,
+                speed: Math.round(weatherData.wind.speed),
+            },
+            visibility: Math.round((weatherData.visibility / 1000) * 0.621371),
+        };
+    }, [weatherData]);
 
     if (error) {
-        return <div className="App">{error}</div>;
+        return (
+            <div className="App">
+                <h2>Error</h2>
+                <p>{error}</p>
+                <button onClick={() => worker.postMessage('start')}>Retry</button>
+            </div>
+        );
     }
 
-    if (!weatherData) {
-        return <div className="App">Loading...</div>;
+    if (!roundedWeatherData) {
+        return <div className="App">Loading weather data...</div>;
     }
-
-    const roundedWeatherData = {
-        ...weatherData,
-        main: {
-            ...weatherData.main,
-            temp: Math.round(weatherData.main.temp),
-            humidity: Math.round(weatherData.main.humidity),
-        },
-        wind: {
-            ...weatherData.wind,
-            speed: Math.round(weatherData.wind.speed),
-        },
-        visibility: Math.round((weatherData.visibility / 1000) * 0.621371),
-    };
 
     return (
         <div className="App">
