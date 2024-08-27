@@ -63,11 +63,13 @@ function App() {
                 setWeatherData(null);
             } else if (e.data.type === 'success') {
                 setWeatherData(e.data.data);
-                setError(null);
             }
         };
 
-        newWorker.postMessage('start');
+        newWorker.postMessage({
+            type: 'start',
+            apiKey: process.env.REACT_APP_API_KEY
+        });
 
         return () => {
             newWorker.postMessage('stop');
