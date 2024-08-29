@@ -1,6 +1,10 @@
+:root {
+    --primary-color: #f0cd1c;
+}
+
 .App {
     height: 100vh;
-    background-color: #ffe142;
+    background-color: var(--primary-color);
     color: #000;
     font-family: system-ui;
     display: flex;
@@ -20,7 +24,7 @@
     border-radius: 2rem;
     padding: 2rem;
     background-color: #000;
-    color: #ffe142;
+    color: var(--primary-color);
     font-size: 2rem;
 }
 
@@ -46,7 +50,7 @@
     display: flex;
     justify-content: space-between;
     background-color: #000;
-    color: #ffe142;
+    color: var(--primary-color);
     border-radius: 2rem;
     padding: 2rem;
     gap: 4rem;
