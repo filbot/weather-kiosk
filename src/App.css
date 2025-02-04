@@ -4,8 +4,9 @@
 }
 
 :root {
-    --primary-color: #1d3e68;
+    --primary-color: #000000;
     --secondary-color: #a4eaff;
+    --highlight-color: #ffec45;
 }
 
 .App {
@@ -45,6 +46,7 @@
     font-size: 5rem;
     font-weight: 300;
     text-transform: capitalize;
+    color: var(--highlight-color);
 }
 
 .temperature {
